@@ -1,0 +1,11 @@
+.feedback-message {
+  border: 1px solid var(--border, #e5e4e7);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+/* 심리민감도 '높음' + 괴리 결합 시(psychologicalBurdenFlag) 시각적으로 강조한다 (FR-4.3). */
+.feedback-message--warning {
+  border-color: #c0392b;
+  background: rgba(192, 57, 43, 0.08);
+}

@@ -1,0 +1,24 @@
+.kyc-survey-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.kyc-survey-form__question {
+  border: 1px solid var(--border, #e5e4e7);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.kyc-survey-form__scale {
+  display: flex;
+  gap: 16px;
+}
+
+/* 와이어프레임 2.4 모바일 레이아웃: 문항이 세로로 쌓이는 카드형이므로 선택지도 세로로 정렬한다. */
+@media (max-width: 480px) {
+  .kyc-survey-form__scale {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

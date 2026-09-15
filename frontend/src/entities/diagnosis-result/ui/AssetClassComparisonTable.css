@@ -1,0 +1,42 @@
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.comparison-table th,
+.comparison-table td {
+  border: 1px solid var(--border, #e5e4e7);
+  padding: 8px;
+  text-align: left;
+}
+
+/* 와이어프레임 2.8 모바일 레이아웃: 표 대신 자산군별 카드로 쌓인다. */
+@media (max-width: 640px) {
+  .comparison-table thead {
+    display: none;
+  }
+
+  .comparison-table,
+  .comparison-table tbody,
+  .comparison-table tr,
+  .comparison-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .comparison-table tr {
+    margin-bottom: 12px;
+    border: 1px solid var(--border, #e5e4e7);
+  }
+
+  .comparison-table td {
+    border: none;
+    padding: 4px 8px;
+  }
+
+  .comparison-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-weight: 600;
+  }
+}

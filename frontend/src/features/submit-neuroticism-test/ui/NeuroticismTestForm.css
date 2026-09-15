@@ -1,0 +1,26 @@
+.neuroticism-test-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.neuroticism-test-form__question {
+  border: 1px solid var(--border, #e5e4e7);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+.neuroticism-test-form__scale {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 와이어프레임 2.5 모바일 레이아웃: 문항이 세로로 쌓이는 카드형이므로 선택지도 세로로 정렬한다. */
+@media (max-width: 480px) {
+  .neuroticism-test-form__scale {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

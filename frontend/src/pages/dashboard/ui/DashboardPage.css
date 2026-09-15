@@ -1,0 +1,24 @@
+.dashboard-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-page__cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.status-card {
+  border: 1px solid var(--border, #e5e4e7);
+  border-radius: 4px;
+  padding: 12px;
+}
+
+@media (max-width: 640px) {
+  .dashboard-page__cards {
+    grid-template-columns: 1fr;
+  }
+}

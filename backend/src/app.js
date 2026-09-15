@@ -1,5 +1,6 @@
 // Express 앱 설정 뼈대
 // 라우트(routes/)는 도메인 구현이 진행됨에 따라 순차적으로 추가한다.
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -18,6 +19,9 @@ const app = express();
 app.use(cors({ origin: env.corsOrigin }));
 app.use(morgan('dev'));
 app.use(express.json());
+
+// 업로드된 잔고 스크린샷 이미지 정적 서빙 (holdings.service.js가 저장하는 /uploads/<파일명>과 대응)
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // 헬스체크: DB 커넥션까지 확인한다.
 app.get('/health', async (req, res) => {
