@@ -3,7 +3,8 @@
 // 응답 포맷은 swagger.json의 ErrorResponse 스키마({ message: string })를 따른다.
 function errorMiddleware(err, req, res, next) {
   console.error(err);
-  const status = err.status || 500;
+  // multer 업로드 제약(파일 크기 초과 등) 위반은 클라이언트 요청 문제이므로 400으로 매핑한다.
+  const status = err.status || (err.name === 'MulterError' ? 400 : 500);
   const message = err.message || '서버 오류가 발생했습니다.';
   res.status(status).json({ message });
 }

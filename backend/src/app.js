@@ -6,7 +6,12 @@ const morgan = require('morgan');
 const env = require('./config/env');
 const pool = require('./db/pool');
 const errorMiddleware = require('./middleware/error.middleware');
+const authMiddleware = require('./middleware/auth.middleware');
 const authRoutes = require('./routes/auth.routes');
+const kycRoutes = require('./routes/kyc.routes');
+const neuroticismRoutes = require('./routes/neuroticism.routes');
+const holdingsRoutes = require('./routes/holdings.routes');
+const diagnosisRoutes = require('./routes/diagnosis.routes');
 
 const app = express();
 
@@ -25,6 +30,10 @@ app.get('/health', async (req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+app.use('/api/kyc', authMiddleware, kycRoutes);
+app.use('/api/neuroticism', authMiddleware, neuroticismRoutes);
+app.use('/api/holdings', authMiddleware, holdingsRoutes);
+app.use('/api/diagnosis', authMiddleware, diagnosisRoutes);
 
 // 공통 에러 응답 처리 — 반드시 모든 라우트 등록 이후, 가장 마지막에 둔다.
 app.use(errorMiddleware);
