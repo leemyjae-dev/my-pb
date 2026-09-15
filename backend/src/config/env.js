@@ -1,9 +1,9 @@
 // 환경변수 로드 및 검증
 //
-// 이번 BE-1 범위에서 실제로 사용하는 값(DB 연결 문자열, 서버 포트, CORS 허용
-// origin)만 검증한다. JWT 관련 값은 BE-2/BE-3 이후 인증 기능에서 실제로
-// 쓰이므로, 지금은 존재 여부를 강제하지 않고 그대로 넘겨준다(없으면
-// undefined). 인증 기능을 구현하는 시점에 필요해지면 그때 검증을 추가한다.
+// 필수로 강제 검증하는 값은 DB 연결 문자열뿐이다. JWT 시크릿은 .env에
+// 있으면 그 값을 쓰고 없으면 undefined로 넘어간다 — jsonwebtoken이 시크릿
+// 없이 서명/검증을 시도하면 그 시점에 에러가 나므로 별도 강제 검증을 두지
+// 않았다(오버엔지니어링 방지).
 
 require('dotenv').config();
 
@@ -21,8 +21,10 @@ const env = {
   corsOrigin: process.env.CORS_ORIGIN || 'http://localhost:5173',
   jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
   jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
-  jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN,
-  jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
+  // 토큰 만료 시간은 도메인 정의서/PRD에 구체적 수치가 없어 임의로 정한
+  // 기본값이다(access 15분, refresh 7일). .env에 값이 있으면 그 값을 쓴다.
+  jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
+  jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
 };
 
 module.exports = env;

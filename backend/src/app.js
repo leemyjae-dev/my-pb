@@ -1,11 +1,12 @@
 // Express 앱 설정 뼈대
-// 라우트(routes/)는 BE-3 이후 도메인 구현 시점에 추가한다.
+// 라우트(routes/)는 도메인 구현이 진행됨에 따라 순차적으로 추가한다.
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const env = require('./config/env');
 const pool = require('./db/pool');
 const errorMiddleware = require('./middleware/error.middleware');
+const authRoutes = require('./routes/auth.routes');
 
 const app = express();
 
@@ -22,6 +23,8 @@ app.get('/health', async (req, res) => {
     res.status(500).json({ status: 'error', db: 'disconnected', message: err.message });
   }
 });
+
+app.use('/api/auth', authRoutes);
 
 // 공통 에러 응답 처리 — 반드시 모든 라우트 등록 이후, 가장 마지막에 둔다.
 app.use(errorMiddleware);
