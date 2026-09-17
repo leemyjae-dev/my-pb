@@ -8,6 +8,8 @@ import {
 } from '../../../features/review-holdings-items/model/useReviewHoldingsItems'
 import HoldingItemEditableRow from '../../../features/review-holdings-items/ui/HoldingItemEditableRow'
 import Button from '../../../shared/ui/Button'
+import ErrorMessage from '../../../shared/ui/ErrorMessage'
+import LoadingIndicator from '../../../shared/ui/LoadingIndicator'
 import { API_BASE_URL } from '../../../shared/api/httpClient'
 import './HoldingsReviewPage.css'
 
@@ -32,27 +34,27 @@ function HoldingsReviewPage() {
 
   if (isLoading) {
     return (
-      <main>
+      <main className="page-wide">
         <h1>자산 항목 확인/보정</h1>
-        <p>불러오는 중...</p>
+        <LoadingIndicator />
       </main>
     )
   }
 
   if (isError) {
     return (
-      <main>
+      <main className="page-wide">
         <h1>자산 항목 확인/보정</h1>
-        <p role="alert">{error.message}</p>
+        <ErrorMessage>{error.message}</ErrorMessage>
       </main>
     )
   }
 
   if (!snapshot) {
     return (
-      <main>
+      <main className="page-wide">
         <h1>자산 항목 확인/보정</h1>
-        <p>업로드된 잔고 스크린샷이 없습니다.</p>
+        <p className="text-sm text-slate-500">업로드된 잔고 스크린샷이 없습니다.</p>
       </main>
     )
   }
@@ -70,47 +72,56 @@ function HoldingsReviewPage() {
   }
 
   return (
-    <main className="holdings-review-page">
+    <main className="page-wide holdings-review-page">
       <h1>자산 항목 확인/보정</h1>
 
       <div className="holdings-review-page__layout">
-        <details className="holdings-review-page__image" open>
-          <summary>원본 스크린샷</summary>
-          <img src={`${API_BASE_URL}${snapshot.imageUrl}`} alt="업로드한 잔고 스크린샷" />
+        <details className="holdings-review-page__image card" open>
+          <summary className="cursor-pointer text-sm font-medium text-slate-700">
+            원본 스크린샷
+          </summary>
+          <img
+            src={`${API_BASE_URL}${snapshot.imageUrl}`}
+            alt="업로드한 잔고 스크린샷"
+            className="mt-3 rounded-md border border-slate-200"
+          />
         </details>
 
-        <div className="holdings-review-page__items">
-          <table className="holdings-table">
-            <thead>
-              <tr>
-                <th>종목명</th>
-                <th>수량</th>
-                <th>평가금액</th>
-                <th>자산군</th>
-                <th>상태</th>
-              </tr>
-            </thead>
-            <tbody>
-              {snapshot.items.map((item) => (
-                <HoldingItemEditableRow
-                  key={item.id}
-                  item={item}
-                  assetClassOptions={assetClassOptions}
-                  onAssetClassChange={handleAssetClassChange}
-                  disabled={updateItemMutation.isPending}
-                />
-              ))}
-            </tbody>
-          </table>
+        <div className="holdings-review-page__items space-y-4">
+          <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-sm">
+            <table className="holdings-table">
+              <thead>
+                <tr>
+                  <th>종목명</th>
+                  <th>수량</th>
+                  <th>평가금액</th>
+                  <th>자산군</th>
+                  <th>상태</th>
+                </tr>
+              </thead>
+              <tbody>
+                {snapshot.items.map((item) => (
+                  <HoldingItemEditableRow
+                    key={item.id}
+                    item={item}
+                    assetClassOptions={assetClassOptions}
+                    onAssetClassChange={handleAssetClassChange}
+                    disabled={updateItemMutation.isPending}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-          {updateItemMutation.isError && <p role="alert">{updateItemMutation.error.message}</p>}
-          {hasPendingItems && <p role="alert">보정이 필요한 항목이 있습니다.</p>}
-          {confirmMutation.isError && <p role="alert">{confirmMutation.error.message}</p>}
+          {updateItemMutation.isError && <ErrorMessage>{updateItemMutation.error.message}</ErrorMessage>}
+          {hasPendingItems && <ErrorMessage>보정이 필요한 항목이 있습니다.</ErrorMessage>}
+          {confirmMutation.isError && <ErrorMessage>{confirmMutation.error.message}</ErrorMessage>}
 
           <Button
             type="button"
             disabled={hasPendingItems || confirmMutation.isPending}
             onClick={handleConfirm}
+            className="w-full sm:w-auto"
           >
             확정
           </Button>

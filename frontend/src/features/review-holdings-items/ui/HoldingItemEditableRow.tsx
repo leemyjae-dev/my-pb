@@ -7,6 +7,12 @@ interface HoldingItemEditableRowProps {
   disabled: boolean
 }
 
+const STATUS_BADGE_CLASSES: Record<HoldingItem['classificationStatus'], string> = {
+  자동분류확정: 'bg-slate-100 text-slate-700',
+  보정필요: 'bg-amber-100 text-amber-800',
+  보정완료: 'bg-primary-100 text-primary-700',
+}
+
 // 와이어프레임 2.7(자산 항목 확인/보정 화면)의 표 한 행. 반응형은 부모(HoldingsReviewPage)의
 // 표 CSS가 담당한다(데스크톱=표, 모바일=카드형으로 접힘).
 function HoldingItemEditableRow({
@@ -25,6 +31,7 @@ function HoldingItemEditableRow({
           value={item.assetClass.id}
           disabled={disabled}
           onChange={(event) => onAssetClassChange(item.id, Number(event.target.value))}
+          className="rounded-md border border-slate-300 bg-white px-2 py-1 text-sm text-slate-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/30 disabled:cursor-not-allowed disabled:bg-slate-100"
         >
           {assetClassOptions.map((assetClass) => (
             <option key={assetClass.id} value={assetClass.id}>
@@ -33,7 +40,13 @@ function HoldingItemEditableRow({
           ))}
         </select>
       </td>
-      <td data-label="상태">{item.classificationStatus}</td>
+      <td data-label="상태">
+        <span
+          className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_BADGE_CLASSES[item.classificationStatus]}`}
+        >
+          {item.classificationStatus}
+        </span>
+      </td>
     </tr>
   )
 }

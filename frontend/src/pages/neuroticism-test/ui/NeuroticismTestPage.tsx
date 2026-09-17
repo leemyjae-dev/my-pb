@@ -5,7 +5,7 @@ function NeuroticismTestPage() {
   const navigate = useNavigate()
 
   return (
-    <main>
+    <main className="page">
       <h1>IPIP 신경성 검사</h1>
       {/* 제출 성공 시 대시보드("/")로 복귀한다. */}
       <NeuroticismTestForm onSuccess={() => navigate('/')} />

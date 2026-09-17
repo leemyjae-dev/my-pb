@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import Button from '../../../shared/ui/Button'
+import ErrorMessage from '../../../shared/ui/ErrorMessage'
 import Input from '../../../shared/ui/Input'
 import { useSignup } from '../model/useSignup'
 
@@ -19,29 +20,31 @@ function SignupForm({ onSuccess }: SignupFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label>
-        이메일
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-1">
+        <label htmlFor="signup-email">이메일</label>
         <Input
+          id="signup-email"
           type="email"
           value={email}
           onChange={(event) => setEmail(event.target.value)}
           required
         />
-      </label>
-      <label>
-        비밀번호
+      </div>
+      <div className="space-y-1">
+        <label htmlFor="signup-password">비밀번호</label>
         <Input
+          id="signup-password"
           type="password"
           value={password}
           onChange={(event) => setPassword(event.target.value)}
           required
         />
-      </label>
+      </div>
 
-      {signupMutation.isError && <p role="alert">{signupMutation.error.message}</p>}
+      {signupMutation.isError && <ErrorMessage>{signupMutation.error.message}</ErrorMessage>}
 
-      <Button type="submit" disabled={signupMutation.isPending}>
+      <Button type="submit" disabled={signupMutation.isPending} className="w-full">
         회원가입
       </Button>
     </form>

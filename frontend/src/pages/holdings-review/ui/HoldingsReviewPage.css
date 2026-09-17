@@ -1,7 +1,11 @@
 .holdings-review-page__layout {
   display: flex;
-  gap: 16px;
+  gap: 1rem;
   align-items: flex-start;
+}
+
+.holdings-review-page__image {
+  flex-shrink: 0;
 }
 
 .holdings-review-page__image img {
@@ -20,11 +24,21 @@
   border-collapse: collapse;
 }
 
+.holdings-table th {
+  background: #f8fafc; /* slate-50 */
+  font-weight: 600;
+  color: #334155; /* slate-700 */
+}
+
 .holdings-table th,
 .holdings-table td {
-  border: 1px solid var(--border, #e5e4e7);
-  padding: 8px;
+  border-bottom: 1px solid #e2e8f0; /* slate-200 */
+  padding: 0.625rem 0.75rem;
   text-align: left;
+}
+
+.holdings-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* 와이어프레임 2.7 모바일 레이아웃: 원본 이미지는 접기/펼치기(<details>), 표는 카드형으로 쌓인다. */
@@ -50,18 +64,20 @@
   }
 
   .holdings-table tr {
-    margin-bottom: 12px;
-    border: 1px solid var(--border, #e5e4e7);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.5rem 0;
   }
 
   .holdings-table td {
     border: none;
-    padding: 4px 8px;
+    padding: 0.25rem 0.75rem;
   }
 
   .holdings-table td::before {
     content: attr(data-label);
     display: block;
+    font-size: 0.75rem;
     font-weight: 600;
+    color: #64748b; /* slate-500 */
   }
 }

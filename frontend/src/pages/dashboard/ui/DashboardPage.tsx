@@ -4,7 +4,6 @@ import NeuroticismStatusCard from '../../../entities/neuroticism-result/ui/Neuro
 import HoldingsStatusCard from '../../../entities/holdings-snapshot/ui/HoldingsStatusCard'
 import { useAuthStore } from '../../../entities/user/model/authStore'
 import Button from '../../../shared/ui/Button'
-import './DashboardPage.css'
 
 // 와이어프레임 2.3(홈/대시보드 화면) 기준
 function DashboardPage() {
@@ -17,21 +16,21 @@ function DashboardPage() {
   }
 
   return (
-    <main className="dashboard-page">
-      <header className="dashboard-page__header">
+    <main className="page-wide">
+      <header className="flex items-center justify-between">
         <h1>나의 진단 현황</h1>
-        <Button type="button" onClick={handleLogout}>
+        <Button type="button" variant="secondary" onClick={handleLogout}>
           로그아웃
         </Button>
       </header>
 
-      <div className="dashboard-page__cards">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <KycStatusCard />
         <NeuroticismStatusCard />
         <HoldingsStatusCard />
       </div>
 
-      <Button type="button" onClick={() => navigate('/diagnosis-result')}>
+      <Button type="button" onClick={() => navigate('/diagnosis-result')} className="w-full sm:w-auto">
         종합 진단 결과 확인
       </Button>
     </main>

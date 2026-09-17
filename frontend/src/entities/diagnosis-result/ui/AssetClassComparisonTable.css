@@ -3,11 +3,21 @@
   border-collapse: collapse;
 }
 
+.comparison-table th {
+  background: #f8fafc; /* slate-50 */
+  font-weight: 600;
+  color: #334155; /* slate-700 */
+}
+
 .comparison-table th,
 .comparison-table td {
-  border: 1px solid var(--border, #e5e4e7);
-  padding: 8px;
+  border-bottom: 1px solid #e2e8f0; /* slate-200 */
+  padding: 0.625rem 0.75rem;
   text-align: left;
+}
+
+.comparison-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
 /* 와이어프레임 2.8 모바일 레이아웃: 표 대신 자산군별 카드로 쌓인다. */
@@ -25,18 +35,20 @@
   }
 
   .comparison-table tr {
-    margin-bottom: 12px;
-    border: 1px solid var(--border, #e5e4e7);
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.5rem 0;
   }
 
   .comparison-table td {
     border: none;
-    padding: 4px 8px;
+    padding: 0.25rem 0.75rem;
   }
 
   .comparison-table td::before {
     content: attr(data-label);
     display: block;
+    font-size: 0.75rem;
     font-weight: 600;
+    color: #64748b; /* slate-500 */
   }
 }

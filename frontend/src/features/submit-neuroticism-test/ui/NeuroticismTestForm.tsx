@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import Button from '../../../shared/ui/Button'
+import ErrorMessage from '../../../shared/ui/ErrorMessage'
 import { useSubmitNeuroticismTest } from '../model/useSubmitNeuroticismTest'
 import './NeuroticismTestForm.css'
 
@@ -57,28 +58,29 @@ function NeuroticismTestForm({ onSuccess }: NeuroticismTestFormProps) {
             문항 {questionIndex + 1}. {question}
           </legend>
           <div className="neuroticism-test-form__scale">
-            <span>전혀 그렇지 않다</span>
+            <span className="text-xs text-slate-500">전혀 그렇지 않다</span>
             {SCALE.map((value) => (
-              <label key={value}>
+              <label key={value} className="inline-flex items-center gap-1 text-sm text-slate-700">
                 <input
                   type="radio"
                   name={`question-${questionIndex}`}
                   value={value}
                   checked={answers[questionIndex] === value}
                   onChange={() => handleAnswerChange(questionIndex, value)}
+                  className="accent-primary-600"
                 />
                 {value}
               </label>
             ))}
-            <span>매우 그렇다</span>
+            <span className="text-xs text-slate-500">매우 그렇다</span>
           </div>
         </fieldset>
       ))}
 
-      {validationMessage && <p role="alert">{validationMessage}</p>}
-      {submitMutation.isError && <p role="alert">{submitMutation.error.message}</p>}
+      {validationMessage && <ErrorMessage>{validationMessage}</ErrorMessage>}
+      {submitMutation.isError && <ErrorMessage>{submitMutation.error.message}</ErrorMessage>}
 
-      <Button type="submit" disabled={submitMutation.isPending}>
+      <Button type="submit" disabled={submitMutation.isPending} className="w-full sm:w-auto">
         제출
       </Button>
     </form>

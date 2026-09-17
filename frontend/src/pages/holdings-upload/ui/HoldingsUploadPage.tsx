@@ -5,9 +5,11 @@ function HoldingsUploadPage() {
   const navigate = useNavigate()
 
   return (
-    <main>
+    <main className="page">
       <h1>잔고 스크린샷 업로드</h1>
-      <HoldingsUploadForm onSuccess={() => navigate('/holdings-review')} />
+      <div className="card">
+        <HoldingsUploadForm onSuccess={() => navigate('/holdings-review')} />
+      </div>
     </main>
   )
 }

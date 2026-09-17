@@ -1,5 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import Button from '../../../shared/ui/Button'
+import ErrorMessage from '../../../shared/ui/ErrorMessage'
+import LoadingIndicator from '../../../shared/ui/LoadingIndicator'
 import { useUploadHoldingsScreenshot } from '../model/useUploadHoldingsScreenshot'
 
 interface HoldingsUploadFormProps {
@@ -22,18 +24,21 @@ function HoldingsUploadForm({ onSuccess }: HoldingsUploadFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="file"
-        accept="image/*"
-        onChange={(event) => setFile(event.target.files?.[0] ?? null)}
-      />
-      <p>선택된 파일: {file ? file.name : '없음'}</p>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(event) => setFile(event.target.files?.[0] ?? null)}
+          className="block w-full text-sm text-slate-600 file:mr-3 file:rounded-md file:border-0 file:bg-primary-600 file:px-3 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-primary-700"
+        />
+        <p className="mt-2 text-sm text-slate-500">선택된 파일: {file ? file.name : '없음'}</p>
+      </div>
 
-      {uploadMutation.isPending && <p>인식 중...</p>}
-      {uploadMutation.isError && <p role="alert">{uploadMutation.error.message}</p>}
+      {uploadMutation.isPending && <LoadingIndicator label="인식 중..." />}
+      {uploadMutation.isError && <ErrorMessage>{uploadMutation.error.message}</ErrorMessage>}
 
-      <Button type="submit" disabled={!file || uploadMutation.isPending}>
+      <Button type="submit" disabled={!file || uploadMutation.isPending} className="w-full sm:w-auto">
         업로드
       </Button>
     </form>
