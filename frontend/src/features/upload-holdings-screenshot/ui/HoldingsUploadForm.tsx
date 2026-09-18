@@ -25,6 +25,10 @@ function HoldingsUploadForm({ onSuccess }: HoldingsUploadFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
+      <p className="text-sm text-slate-500">
+        상태바, 상단 메뉴/계좌 선택 영역은 제외하고 보유종목 표 부분만 나오도록 잘라서
+        업로드하면 인식률이 올라갑니다.
+      </p>
       <div className="rounded-lg border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
         <input
           type="file"
