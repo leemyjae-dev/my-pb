@@ -1,0 +1,19 @@
+# Vercel 배포 시 제외할 파일/디렉토리
+# node_modules는 Vercel 빌드 서버(Linux)에서 package.json 기준으로 새로
+# 설치되어야 한다 — 로컬(Windows)에서 만든 node_modules를 그대로 올리면
+# bcrypt 같은 네이티브 모듈이 깨진다.
+node_modules
+
+# 로컬 전용 이미지 저장 디렉토리 (프로덕션은 Supabase Storage를 사용)
+uploads
+
+# 로컬에서 tesseract.js가 캐싱한 OCR 언어 데이터 (소스 코드 아님)
+*.traineddata
+
+# 단위 테스트는 배포 산출물에 필요 없음
+tests
+
+# 환경변수 파일 (프로덕션 값은 `vercel env`로 별도 등록)
+.env
+.env.example
+.env.production

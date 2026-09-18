@@ -1,6 +1,7 @@
 // 잔고 스크린샷 업로드 및 이미지 인식 도메인 서비스 (FR-3.1~FR-3.2)
 const pool = require('../db/pool');
 const { recognizeText } = require('./ocr.service');
+const { saveHoldingsScreenshot } = require('./storage.service');
 const { parseHoldingItemsFromText, guessAssetClassName } = require('../utils/holdingsParsing');
 
 // Tesseract.js + 단순 키워드 매칭 조합은 신뢰할 수 없으므로, 자동 인식된
@@ -50,10 +51,12 @@ async function getAssetClassIdByName(name) {
 
 // 업로드된 이미지 저장 → OCR 인식 → 파싱 → 임시 자산군 배정 →
 // holdings_snapshots/holding_items 저장 (FR-3.1~FR-3.2, 재업로드 시 새 스냅샷 생성: FR-3.6)
+// 이미지 저장 위치(로컬 디스크/Supabase Storage)는 storage.service.js가
+// 환경변수 기준으로 분기하며, 이 함수는 어느 쪽인지 알 필요가 없다.
 async function upload(userId, file) {
-  const imageUrl = `/uploads/${file.filename}`;
+  const imageUrl = await saveHoldingsScreenshot(file);
 
-  const rawText = await recognizeText(file.path);
+  const rawText = await recognizeText(file.buffer);
   const parsedItems = parseHoldingItemsFromText(rawText);
 
   const snapshotResult = await pool.query(

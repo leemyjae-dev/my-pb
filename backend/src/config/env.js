@@ -25,6 +25,11 @@ const env = {
   // 기본값이다(access 15분, refresh 7일). .env에 값이 있으면 그 값을 쓴다.
   jwtAccessExpiresIn: process.env.JWT_ACCESS_EXPIRES_IN || '15m',
   jwtRefreshExpiresIn: process.env.JWT_REFRESH_EXPIRES_IN || '7d',
+  // 잔고 스크린샷 저장소(Supabase Storage) 설정. 로컬 .env에는 없으므로
+  // undefined로 넘어가고, storage.service.js가 이 둘의 존재 여부로 로컬
+  // 디스크/Supabase Storage 저장을 분기한다.
+  supabaseUrl: process.env.SUPABASE_URL,
+  supabaseServiceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
 };
 
 module.exports = env;

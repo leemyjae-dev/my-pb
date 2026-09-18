@@ -2,27 +2,18 @@
 // 이미지 파일(jpg/png)만, 최대 5MB로 제한한다. 구체적 제한값은 PRD 9절
 // 확인 필요 사항이므로 2일 MVP 규모에 맞는 임의의 값을 사용했다.
 //
-// 저장 위치는 2일 MVP 결정에 따라 로컬 디스크(backend/uploads/)를 사용한다.
-// 저장 위치 관련 코드를 이 파일에만 캡슐화해, 추후 클라우드 스토리지 등으로
-// 바꿀 때 이 파일만 수정하면 되도록 한다.
-const fs = require('fs');
+// multer는 파일을 메모리 버퍼(file.buffer)로만 받는다 — 실제 저장 위치
+// (로컬 디스크 vs Supabase Storage)는 services/storage.service.js에서
+// 환경변수 기준으로 분기해 처리한다. Vercel 같은 서버리스 배포 환경은
+// 임의 디렉토리에 디스크 쓰기가 불가능하므로, 미들웨어 단에서 디스크에
+// 직접 쓰지 않는 방식으로 바꿨다(로컬 디스크 저장은 storage.service.js가
+// 필요할 때만 backend/uploads/에 쓴다).
 const path = require('path');
-const crypto = require('crypto');
 const multer = require('multer');
 
 const UPLOAD_DIR = path.join(__dirname, '../../uploads');
 const MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024; // 5MB
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png'];
-
-fs.mkdirSync(UPLOAD_DIR, { recursive: true });
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, UPLOAD_DIR),
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname) || '';
-    cb(null, `${Date.now()}-${crypto.randomUUID()}${ext}`);
-  },
-});
 
 function fileFilter(req, file, cb) {
   if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
@@ -34,7 +25,7 @@ function fileFilter(req, file, cb) {
 }
 
 const upload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   fileFilter,
   limits: { fileSize: MAX_FILE_SIZE_BYTES },
 });
