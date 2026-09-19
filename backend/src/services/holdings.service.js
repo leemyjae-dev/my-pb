@@ -1,8 +1,8 @@
 // 잔고 스크린샷 업로드 및 이미지 인식 도메인 서비스 (FR-3.1~FR-3.2)
 const pool = require('../db/pool');
-const { recognizeText } = require('./ocr.service');
+const { recognizeWords } = require('./ocr.service');
 const { saveHoldingsScreenshot } = require('./storage.service');
-const { parseHoldingItemsFromText, guessAssetClassName } = require('../utils/holdingsParsing');
+const { parseHoldingItems, guessAssetClassName } = require('../utils/holdingsParsing');
 
 // Tesseract.js + 단순 키워드 매칭 조합은 신뢰할 수 없으므로, 자동 인식된
 // 모든 항목은 예외 없이 사용자 보정이 필요한 상태로 저장한다(swagger.json
@@ -56,8 +56,8 @@ async function getAssetClassIdByName(name) {
 async function upload(userId, file) {
   const imageUrl = await saveHoldingsScreenshot(file);
 
-  const rawText = await recognizeText(file.buffer);
-  const parsedItems = parseHoldingItemsFromText(rawText);
+  const { text, words } = await recognizeWords(file.buffer);
+  const parsedItems = parseHoldingItems({ text, words });
 
   const snapshotResult = await pool.query(
     `INSERT INTO holdings_snapshots (user_id, image_url)
